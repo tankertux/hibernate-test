@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+group = "com.carfax"
+version = "0.1"
+
+repositories{
+	mavenLocal()
+	maven{
+		url 'http://resolver.svc.cfx/all'
+	}
+	mavenCentral()
+}
+
+dependencies {
+	compile(group: 'org.hibernate', name: 'hibernate', version: '3.2')
+	
+	testCompile(group: 'org.hsqldb', name: 'hsqldb', version: '2.3.0')
+}
+
+task wrapper(type: Wrapper){
+	distributionUrl = "http://resolver/gradle-distributions-cache/gradle-1.6-bin.zip"
+}
