@@ -1,10 +1,11 @@
 package com.carfax.crn;
 
+import org.hibernate.annotations.Entity;
+
+@Entity
 public class Vehicle {
-//	@Id
 	Vin vin;
 	String make;
 	String model;
 	Integer year;
-	String plate;
 }
