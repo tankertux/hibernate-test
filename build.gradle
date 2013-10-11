@@ -25,14 +25,14 @@ liquibase {
 	}
 
 	databases {
-		public {
+		sandbox {
 			url = 'jdbc:hsqldb:database/sandboxDb;FILE_LOCK=NO'
 			username = 'sa'
 			password = ''
 		}
 	}
 
-	defaultDatabase = databases.public
+	defaultDatabase = databases.sandbox
 }
 
 
