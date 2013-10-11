@@ -1,24 +1,54 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
+apply plugin: 'liquibase'
+apply from: 'database.gradle'
 
 group = "com.carfax"
 version = "0.1"
 
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.augusttechgroup:gradle-liquibase-plugin:0.7'
+		classpath 'org.hsqldb:hsqldb:2.3.0'
+	}
+}
+
+liquibase {
+	changelogs {
+		main {
+			file = file('changelog.groovy')
+		}
+	}
+
+	databases {
+		public {
+			url = 'jdbc:hsqldb:database/sandboxDb;FILE_LOCK=NO'
+			username = 'sa'
+			password = ''
+		}
+	}
+
+	defaultDatabase = databases.public
+}
+
+
 repositories{
-	mavenLocal()
 	maven{
-		url 'http://resolver.svc.cfx/all'
+		url "https://repository.jboss.org/nexus/content/groups/public-jboss"
 	}
 	mavenCentral()
 }
 
 dependencies {
-	compile(group: 'org.hibernate', name: 'hibernate', version: '3.2')
-	
+	compile group:'org.hibernate', name:'hibernate-core', version:'3.6.0.Final'
+
 	testCompile(group: 'org.hsqldb', name: 'hsqldb', version: '2.3.0')
 }
 
 task wrapper(type: Wrapper){
-	distributionUrl = "http://resolver/gradle-distributions-cache/gradle-1.6-bin.zip"
+	gradleVersion = "1.8"
 }

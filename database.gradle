@@ -1,0 +1,40 @@
+apply plugin: 'java'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  runtime (group: 'org.hsqldb', name: 'hsqldb', version: '2.3.0')
+}
+
+
+task createDatabaseScript {
+  group = 'database'
+  doLast { 
+    def fileName = 'starth2'
+    if(System.properties['os.name'].startsWith('Windows')) { 
+      fileName += '.bat'
+    }
+    def file = new File(projectDir, fileName)
+    file.withPrintWriter {  pw -> 
+      pw.print("java -cp ${sourceSets.main.runtimeClasspath.asPath} org.hsqldb.server.Server") 
+    }
+    file.setExecutable(true)
+  }
+}
+
+task startDatabase(type: JavaExec) {
+  group = 'database'
+  workingDir = projectDir
+  main = 'org.h2.tools.Server'
+  classpath = runtimeClasspath
+}
+
+task buildSchema(type: JavaExec) {
+  group = 'workshop'
+  classpath = runtimeClasspath
+  workingDir = projectDir
+  main = 'org.h2.tools.RunScript'
+  args = ['-url', 'jdbc:hsqldb:database/sandboxDb;FILE_LOCK=NO', '-user', 'sa', '-script', 'create-schema-generic.sql']
+}
