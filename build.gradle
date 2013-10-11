@@ -20,7 +20,7 @@ buildscript {
 liquibase {
 	changelogs {
 		main {
-			file = file('changelog.groovy')
+			file = file('src/main/resources/changelog.groovy')
 		}
 	}
 
