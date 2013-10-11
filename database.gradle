@@ -27,7 +27,7 @@ task createDatabaseScript {
 task startDatabase(type: JavaExec) {
   group = 'database'
   workingDir = projectDir
-  main = 'org.h2.tools.Server'
+  main = 'org.hsqldb.server.Server'
   classpath = runtimeClasspath
 }
 
@@ -35,6 +35,6 @@ task buildSchema(type: JavaExec) {
   group = 'workshop'
   classpath = runtimeClasspath
   workingDir = projectDir
-  main = 'org.h2.tools.RunScript'
-  args = ['-url', 'jdbc:hsqldb:database/sandboxDb;FILE_LOCK=NO', '-user', 'sa', '-script', 'create-schema-generic.sql']
+  main = '-jar'
+  args = ["$System.env.HSQLDB_HOME/lib/sqltool.jar", 'mem', 'create-schema-generic.sql']
 }
