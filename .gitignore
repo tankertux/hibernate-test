@@ -4,3 +4,4 @@ build/
 .gradle/
 .classpath
 /build
+/test.lck
